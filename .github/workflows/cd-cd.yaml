@@ -9,26 +9,20 @@ env:
   IMAGE_NAME: ${{ vars.IMAGE_NAME }}
   RESOURCE_GROUP: ${{ vars.RESOURCE_GROUP }}
   AZURE_APP_NAME_DEV: ${{ vars.AZURE_APP_NAME }}
-  ACR_LOGIN_SERVER : ${{ secrets.ACR_LOGIN_SERVER }}
-  ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
-  ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
-      
       - name: Checkout Code
         uses: actions/checkout@v3
-
       
-      - uses: azure/docker-login@v2
+      - name: Azure Container Registry Login
+        uses: azure/docker-login@v2
         with:
           login-server: ${{ secrets.ACR_LOGIN_SERVER }}
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
-
       
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v4
@@ -36,7 +30,7 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:develop
-
+      
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v2
         with:
