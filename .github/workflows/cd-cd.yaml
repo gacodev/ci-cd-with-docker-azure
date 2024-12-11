@@ -5,19 +5,17 @@ on:
     branches:
       - develop
 
-env:
-  IMAGE_NAME: ${{ vars.IMAGE_NAME }}
-  RESOURCE_GROUP: ${{ vars.RESOURCE_GROUP }}
-  AZURE_APP_NAME_DEV: ${{ vars.AZURE_APP_NAME }}
-
+# Si has definido variables y secretos a nivel de environment llamado "develop",
+# debes especificar el environment en el job.
 jobs:
   build-and-deploy:
+    environment: develop
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-      
-      - name: Login to Docker Hub
+
+      - name: Login to Docker Registry
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.ACRUSERNAME }}
@@ -28,10 +26,11 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.ACRLOGINSERVER }}/${{ env.IMAGE_NAME }}:develop
+          
+          tags: ${{ secrets.ACRLOGINSERVER }}/${{ vars.IMAGE_NAME }}:develop
       
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ env.AZURE_APP_NAME_DEV }}
-          images: ${{ secrets.ACRLOGINSERVER }}/${{ env.IMAGE_NAME }}:develop
+          app-name: ${{ vars.AZURE_APP_NAME }}
+          images: ${{ secrets.ACRLOGINSERVER }}/${{ vars.IMAGE_NAME }}:develop
