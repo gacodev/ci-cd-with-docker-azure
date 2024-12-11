@@ -1,13 +1,13 @@
-name: CI/CD for Develop
+name: CI/CD for main
 
 on:
   push:
     branches:
-      - develop
+      - main
 
 jobs:
   build-and-deploy:
-    environment: develop
+    environment: production
     runs-on: ubuntu-latest
     env:
       REGISTRY_SERVER: ${{ secrets.ACRLOGINSERVER }}.azurecr.io
@@ -31,11 +31,14 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ env.REGISTRY_SERVER }}/${{ env.IMAGE_NAME }}:develop
+          tags: |
+            ${{ env.REGISTRY_SERVER }}/${{ env.IMAGE_NAME }}:build-${{ github.run_number }}
+            ${{ env.REGISTRY_SERVER }}/${{ env.IMAGE_NAME }}:latest
+
 
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.APP_NAME }}
-          images: ${{ env.REGISTRY_SERVER }}/${{ env.IMAGE_NAME }}:develop
+          images: ${{ env.REGISTRY_SERVER }}/${{ env.IMAGE_NAME }}:main
           publish-profile: ${{ env.AZURE_WEB_APP_PUBLISH_PROFILE }}
