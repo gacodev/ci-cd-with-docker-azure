@@ -18,7 +18,7 @@ jobs:
       - name: Login to Docker Registry
         uses: docker/login-action@v3
         with:
-          registry: ${{ secrets.ACRLOGINSERVER }}
+          registry: ${{ secrets.ACRLOGINSERVER }}.azurecr.io
           username: ${{ secrets.ACRUSERNAME }}
           password: ${{ secrets.ACRPASSWORD }}
       
