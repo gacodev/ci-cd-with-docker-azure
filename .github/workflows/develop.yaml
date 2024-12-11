@@ -28,12 +28,12 @@ jobs:
           
       - name: Set environment variables
         run: |
-          echo "database.default.hostname=codeigniter_db" >> .env
-          echo "database.default.database=codeigniter_db" >> .env
-          echo "database.default.username=codeigniter_user" >> .env
-          echo "database.default.password=user_password" >> .env
+          echo "database.default.hostname=coxpatentsdevmysql.mysql.database.azure.com" >> .env
+          echo "database.default.database=cox_patents_db_dev" >> .env
+          echo "database.default.username=coxpatentsdevmysql" >> .env
+          echo "database.default.password=a1b1c1d1.." >> .env
           echo "database.default.DBDriver=MySQLi" >> .env
-          echo "database.default.port=3307" >> .env    
+          echo "database.default.port=3306" >> .env    
 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v4
