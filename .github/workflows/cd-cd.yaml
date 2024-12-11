@@ -9,9 +9,9 @@ env:
   ACR_LOGIN_SERVER: ${{ secrets.ACR_LOGIN_SERVER }}
   ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
   ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
-  IMAGE_NAME: ${{ env.IMAGE_NAME }}
-  RESOURCE_GROUP: ${{ env.RESOURCE_GROUP }}
-  AZURE_APP_NAME_DEV: ${{ env.AZURE_APP_NAME }}
+  IMAGE_NAME: ${{ vars.IMAGE_NAME }}
+  RESOURCE_GROUP: ${{ vars.RESOURCE_GROUP }}
+  AZURE_APP_NAME_DEV: ${{ vars.AZURE_APP_NAME }}
 
 jobs:
   build-and-deploy:
