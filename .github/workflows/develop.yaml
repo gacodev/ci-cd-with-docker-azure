@@ -25,6 +25,15 @@ jobs:
           registry: ${{ env.REGISTRY_SERVER }}
           username: ${{ secrets.ACRUSERNAME }}
           password: ${{ secrets.ACRPASSWORD }}
+          
+      - name: Set environment variables
+        run: |
+          echo "database.default.hostname=codeigniter_db" >> .env
+          echo "database.default.database=codeigniter_db" >> .env
+          echo "database.default.username=codeigniter_user" >> .env
+          echo "database.default.password=user_password" >> .env
+          echo "database.default.DBDriver=MySQLi" >> .env
+          echo "database.default.port=3307" >> .env    
 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v4
