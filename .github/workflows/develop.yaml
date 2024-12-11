@@ -41,13 +41,12 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ env.REGISTRY_SERVER }}/${{ env.IMAGE_NAME }}:build-${{ github.run_number }}
-            ${{ env.REGISTRY_SERVER }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.REGISTRY_SERVER }}/${{ env.IMAGE_NAME }}:${{ github.run_number }}
 
 
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.APP_NAME }}
-          images: ${{ env.REGISTRY_SERVER }}/${{ env.IMAGE_NAME }}:develop
+          images: ${{ env.REGISTRY_SERVER }}/${{ env.IMAGE_NAME }}:${{ github.run_number }}
           publish-profile: ${{ env.AZURE_WEB_APP_PUBLISH_PROFILE }}
